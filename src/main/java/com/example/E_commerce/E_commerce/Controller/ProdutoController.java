@@ -23,9 +23,9 @@ public class ProdutoController {
 
     @PostMapping
     public ResponseEntity<Produtos> salvarProdutos(@RequestBody @Valid ProdutoDto produtoDto){
-        var salvar = produtoService.salvarProdutos();
-        BeanUtils.copyProperties(produtoDto, salvar);
+        var salvar = produtoService.salvarProdutos(produtoDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(salvar);
+
     }
 
     @GetMapping
@@ -47,7 +47,7 @@ public class ProdutoController {
                                             @RequestBody @Valid ProdutoDto produtoDto){
         Optional<Produtos> produtos = produtoService.produto(idProduto);
         if(produtos.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto não encontrado.");
         }
         var produtos1 = produtos.get();
         BeanUtils.copyProperties(produtoDto, produtos1);
@@ -58,7 +58,7 @@ public class ProdutoController {
     public ResponseEntity<Object> deletar(@PathVariable(value = "id")UUID idProduto){
         Optional<Produtos> deletar = produtoService.produto(idProduto);
         if(deletar.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto não encontrado.");
         }
         ResponseEntity.ok().body(produtoService.deletarProduto(idProduto));
         System.out.println("Produto deletado: " + idProduto);
